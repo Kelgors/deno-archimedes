@@ -2,6 +2,7 @@
   "deno.enable": true,
   "editor.formatOnSave": true,
   "editor.inlayHints.enabled": "off",
+  "editor.codeActionsOnSave": ["source.organizeImports"],
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },

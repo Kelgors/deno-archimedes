@@ -1,0 +1,63 @@
+export const snapshot = {};
+
+snapshot[`global > GET /bookmarks > should return bookmarks 1`] = `
+{
+  data: [
+    {
+      description: "The Internet privacy company that empowers you to seamlessly take control of your personal information online, without any tradeoffs.",
+      id: "3a543337-0989-400b-9d39-c2f02270a299",
+      name: "DuckDuckGo",
+      url: "https://duckduckgo.com/",
+    },
+    {
+      description: "The search engine that values you as a user, not as a product",
+      id: "7abd6fbd-dc99-40b8-a404-efe6ae8a51f0",
+      name: "Qwant",
+      url: "https://www.qwant.com/",
+    },
+    {
+      description: "",
+      id: "99943bac-567a-4bee-ba4d-fc72fed4c26b",
+      name: "Google",
+      url: "https://www.google.com/",
+    },
+    {
+      description: "",
+      id: "96bd0559-5a64-4d57-b702-c9b7f6c6ba3d",
+      name: "Bing",
+      url: "https://www.bing.com/",
+    },
+  ],
+}
+`;
+
+snapshot[`global > GET /bookmarks/:id > should return google bookmark  1`] = `
+{
+  data: {
+    description: "",
+    id: "99943bac-567a-4bee-ba4d-fc72fed4c26b",
+    name: "Google",
+    url: "https://www.google.com/",
+  },
+}
+`;
+
+snapshot[`global > POST /bookmarks > should create a bookmark 1`] = `
+{
+  description: "description
+",
+  id: undefined,
+  name: "name",
+  url: "http://url",
+}
+`;
+
+snapshot[`global > PUT /bookmarks/:id > should update a bookmark 1`] = `
+{
+  description: "updated description
+",
+  id: undefined,
+  name: "updated-name",
+  url: "http://updated-url",
+}
+`;

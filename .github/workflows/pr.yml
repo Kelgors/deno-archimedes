@@ -32,12 +32,17 @@ jobs:
 
       - name: Wait for Postgres to start
         run: |
-          until pg_isready -h localhost -p 5432; do
+          until pg_isready -h localhost; do
             echo "Waiting for PostgreSQL to start..."
             sleep 5
           done
-          echo "Running migrations"
-          psql -U postgres -h localhost < db/migrations/*
+
+      - name: Running migrations
+        run: |
+          for file in db/migrations/*.sql; do
+            echo "Running migration: $file"
+            psql -U postgres -h localhost -f "$file"
+          done
 
       - run: deno test --allow-all
         env:

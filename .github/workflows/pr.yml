@@ -13,14 +13,32 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+
       - run: deno fmt --check
+
       - run: deno lint
+
+      - name: Wait for Postgres to start
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for PostgreSQL to start..."
+            sleep 5
+          done
+          echo "Running migrations"
+          psql -U postgres -h localhost < db/migrations/*
+
       - run: deno test --allow-all
         env:
           APP_SECRET_PATH: dev.key

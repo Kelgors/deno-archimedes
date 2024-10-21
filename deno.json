@@ -1,13 +1,17 @@
 {
   "imports": {
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
     "@std/expect": "jsr:@std/expect@^1.0.5",
+    "@std/fs": "jsr:@std/fs@^1.0.4",
     "@std/testing": "jsr:@std/testing@^1.0.3",
+    "argon2": "jsr:@felix/argon2@^2.0.1",
+    "djwt": "https://deno.land/x/djwt@v3.0.2/mod.ts",
     "hono": "jsr:@hono/hono@^4.6.5",
     "postgres": "https://deno.land/x/postgres@v0.19.3/mod.ts",
     "zod": "npm:zod@^3.23.8"
   },
   "tasks": {
-    "start": "deno run --allow-net --allow-env main.ts"
+    "start": "deno run --allow-net --allow-env --allow-read --allow-ffi main.ts"
   },
   "fmt": {
     "indentWidth": 2,

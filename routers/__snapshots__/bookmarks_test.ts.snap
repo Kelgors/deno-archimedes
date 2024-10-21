@@ -31,6 +31,16 @@ snapshot[`global > GET /bookmarks > should return bookmarks 1`] = `
 }
 `;
 
+snapshot[`global > POST /bookmarks > should create a bookmark 1`] = `
+{
+  description: "description
+",
+  id: undefined,
+  name: "name",
+  url: "http://url",
+}
+`;
+
 snapshot[`global > GET /bookmarks/:id > should return google bookmark  1`] = `
 {
   data: {
@@ -42,13 +52,14 @@ snapshot[`global > GET /bookmarks/:id > should return google bookmark  1`] = `
 }
 `;
 
-snapshot[`global > POST /bookmarks > should create a bookmark 1`] = `
+snapshot[`global > GET /bookmarks/:id > should return the created item  1`] = `
 {
-  description: "description
+  data: {
+    description: "description
 ",
-  id: undefined,
-  name: "name",
-  url: "http://url",
+    name: "name",
+    url: "http://url",
+  },
 }
 `;
 

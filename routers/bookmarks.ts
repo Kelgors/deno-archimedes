@@ -9,18 +9,18 @@ router.get('/', async (c) => {
   const db = c.get('db');
   const dbItems = await db
     .queryObject<PersistantBookmark>(
-      `SELECT id, name, url, description FROM "bookmarks"`,
+      `SELECT b.* FROM bookmarks b INNER JOIN bookmark_users bu ON bu.bookmark_id = b.id WHERE bu.user_id = $USER_ID`,
+      { user_id: c.get('token').sub },
     );
 
   return c.json({ data: dbItems.rows });
 });
 
 router.get('/:id', zParamValidator(bookmarkObjectIdSchema), async (c) => {
-  const id = c.req.param('id');
   const db = c.get('db');
   const result = await db.queryObject<PersistantBookmark>(
-    `SELECT id, name, url, description FROM "bookmarks" WHERE "id" = $ID LIMIT 1`,
-    { id },
+    `SELECT b.* FROM bookmarks b INNER JOIN bookmark_users bu ON bu.bookmark_id = b.id WHERE bu.bookmark_id = $BOOKMARK_ID AND bu.user_id = $USER_ID LIMIT 1`,
+    { bookmark_id: c.req.param('id'), user_id: c.get('token').sub },
   );
   return c.json({ data: result.rows[0] || null }, result.rows[0] ? 200 : 404);
 });
@@ -32,9 +32,17 @@ router.post(
     const body = c.req.valid('json');
     const db = c.get('db');
     const result = await db.queryObject<PersistantBookmark>(
-      `INSERT INTO "bookmarks" ("name", "url", "description") VALUES ($NAME, $URL, $DESCRIPTION) RETURNING *`,
+      `INSERT INTO bookmarks (name, url, description) VALUES ($NAME, $URL, $DESCRIPTION) RETURNING *`,
       body,
     );
+    if (result.rowCount !== 1) {
+      return c.json({ error: { message: 'Cannot create the bookmark' } }, 500);
+    }
+
+    await db.queryArray(`INSERT INTO bookmark_users (bookmark_id, user_id) VALUES ($BOOKMARK_ID, $USER_ID);`, {
+      bookmark_id: result.rows[0].id,
+      user_id: c.get('token').sub,
+    });
     return c.json({ data: result.rows[0] || null }, result.rows[0]?.id ? 201 : 500);
   },
 );
@@ -47,7 +55,7 @@ router.put(
     const body = c.req.valid('json');
     const db = c.get('db');
     const result = await db.queryObject<PersistantBookmark>(
-      `UPDATE "bookmarks" SET "name" = $NAME, "url" = $URL, "description" = $DESCRIPTION WHERE "id" = $ID RETURNING *`,
+      `UPDATE bookmarks SET name = $NAME, url = $URL, description = $DESCRIPTION WHERE id = $ID RETURNING *`,
       { id: c.req.param('id'), ...body },
     );
     return c.json({ data: result.rows[0] || null });
@@ -56,10 +64,9 @@ router.put(
 
 router.delete('/:id', zParamValidator(bookmarkObjectIdSchema), async (c) => {
   const db = c.get('db');
-  const id = c.req.param('id');
   const result = await db.queryArray(
-    `DELETE FROM "bookmarks" WHERE "id" = $ID`,
-    { id },
+    `DELETE FROM bookmarks WHERE id = $ID`,
+    { id: c.req.param('id') },
   );
   return c.json({ success: (result.rowCount || 0) > 0 });
 });

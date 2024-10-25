@@ -6,6 +6,15 @@ import { createApp, ensureAppSecret } from '../app.ts';
 import { createClient } from '../db/mod.ts';
 
 const privateKey = await ensureAppSecret();
+const db = createClient();
+const app = await createApp(db);
+before(async () => {
+  await db.connect();
+  await db.queryArray(await Deno.readTextFile('db/seeds/00-reset.sql'));
+  await db.queryArray(await Deno.readTextFile('db/seeds/01-auth.sql'));
+  await db.queryArray(await Deno.readTextFile('db/seeds/02-bookmarks.sql'));
+});
+after(() => db.end());
 
 const VALID_TOKEN = await create({ alg: 'HS512', typ: 'JWT' }, {
   sub: '67558dc7-15a9-4ec7-baa4-43610a81d17a',
@@ -21,16 +30,6 @@ const DEFAULT_HEADERS = {
   Authorization: `Bearer ${VALID_TOKEN}`,
   'Content-Type': 'application/json',
 };
-
-const db = createClient();
-const app = await createApp(db);
-before(async () => {
-  await db.connect();
-  await db.queryArray(await Deno.readTextFile('db/seeds/00-reset.sql'));
-  await db.queryArray(await Deno.readTextFile('db/seeds/01-auth.sql'));
-  await db.queryArray(await Deno.readTextFile('db/seeds/02-bookmarks.sql'));
-});
-after(() => db.end());
 
 let createItemId: string;
 

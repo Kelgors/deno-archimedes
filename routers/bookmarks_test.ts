@@ -69,7 +69,8 @@ describe('POST /bookmarks', () => {
       body: JSON.stringify({
         name: 'name',
         url: 'http://url',
-        description: 'description\n',
+        description:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tincidunt tortor in venenatis tincidunt. In a egestas ex, non egestas orci. Pellentesque in nisi pharetra, tempus augue ut, condimentum augue. Nunc sed sagittis mi. Suspendisse rutrum consequat finibus. Curabitur aliquam risus in consectetur fermentum. Cras in ligula eu massa condimentum ullamcorper vel vitae arcu. Aliquam nec aliquet ex, in mattis ante. Mauris enim orci, feugiat scelerisque posuere sit amet, auctor in lacus. Ut semper, dolor et elementum feugiat, orci nibh eleifend mi, eget pharetra neque neque ac eros. Praesent fringilla tellus eu purus semper, vel ultrices magna tempus. Nulla tristique sodales magna sit amet fringilla.',
       }),
       headers: defaultHeaders,
     });

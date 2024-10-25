@@ -22,7 +22,7 @@ jobs:
           --health-retries=5
 
     env:
-      DATABASE_URL: 'DATABASE_URL=postgres://archi:medes@localhost:5432/bookmarks?sslmode=disable'
+      DATABASE_URL: 'postgres://archi:medes@localhost:5432/bookmarks?sslmode=disable'
       APP_SECRET_PATH: dev.key
 
     steps:

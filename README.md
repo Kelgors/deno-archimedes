@@ -9,7 +9,7 @@ You will need [docker](https://docs.docker.com/engine/install/) and
 
 ```sh
 # initialize .env file
-echo -e "APP_SECRET_PATH=dev.key\nDATABASE_URL=postgres://archi:medes@localhost:5432/bookmarks?sslmode=disable" | tee .env
+echo -e "PRIVATE_KEY_PATH=dev.key\nDATABASE_URL=postgres://archi:medes@localhost:5432/bookmarks?sslmode=disable" | tee .env
 # start postgres
 docker compose -f docker-compose.dev.yml up -d
 

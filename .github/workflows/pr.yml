@@ -23,7 +23,7 @@ jobs:
 
     env:
       DATABASE_URL: 'postgres://archi:medes@localhost:5432/bookmarks?sslmode=disable'
-      APP_SECRET_PATH: dev.key
+      PRIVATE_KEY_PATH: dev.key
 
     steps:
       - uses: actions/checkout@v3

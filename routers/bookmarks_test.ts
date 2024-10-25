@@ -2,10 +2,10 @@ import { expect } from '@std/expect';
 import { after, before, describe, it } from '@std/testing/bdd';
 import { assertSnapshot } from '@std/testing/snapshot';
 import { create } from 'djwt';
-import { createApp, ensureAppSecret } from '../app.ts';
+import { createApp, loadPrivateKey } from '../app.ts';
 import { createClient } from '../db/mod.ts';
 
-const privateKey = await ensureAppSecret();
+const privateKey = await loadPrivateKey();
 const db = createClient();
 const app = await createApp(db);
 before(async () => {

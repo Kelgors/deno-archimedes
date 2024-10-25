@@ -31,6 +31,15 @@ snapshot[`global > GET /bookmarks > should return bookmarks 1`] = `
 }
 `;
 
+snapshot[`global > POST /bookmarks > should create a bookmark 1`] = `
+{
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tincidunt tortor in venenatis tincidunt. In a egestas ex, non egestas orci. Pellentesque in nisi pharetra, tempus augue ut, condimentum augue. Nunc sed sagittis mi. Suspendisse rutrum consequat finibus. Curabitur aliquam risus in consectetur fermentum. Cras in ligula eu massa condimentum ullamcorper vel vitae arcu. Aliquam nec aliquet ex, in mattis ante. Mauris enim orci, feugiat scelerisque posuere sit amet, auctor in lacus. Ut semper, dolor et elementum feugiat, orci nibh eleifend mi, eget pharetra neque neque ac eros. Praesent fringilla tellus eu purus semper, vel ultrices magna tempus. Nulla tristique sodales magna sit amet fringilla.",
+  id: undefined,
+  name: "name",
+  url: "http://url",
+}
+`;
+
 snapshot[`global > GET /bookmarks/:id > should return google bookmark  1`] = `
 {
   data: {
@@ -42,13 +51,13 @@ snapshot[`global > GET /bookmarks/:id > should return google bookmark  1`] = `
 }
 `;
 
-snapshot[`global > POST /bookmarks > should create a bookmark 1`] = `
+snapshot[`global > GET /bookmarks/:id > should return the created item  1`] = `
 {
-  description: "description
-",
-  id: undefined,
-  name: "name",
-  url: "http://url",
+  data: {
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tincidunt tortor in venenatis tincidunt. In a egestas ex, non egestas orci. Pellentesque in nisi pharetra, tempus augue ut, condimentum augue. Nunc sed sagittis mi. Suspendisse rutrum consequat finibus. Curabitur aliquam risus in consectetur fermentum. Cras in ligula eu massa condimentum ullamcorper vel vitae arcu. Aliquam nec aliquet ex, in mattis ante. Mauris enim orci, feugiat scelerisque posuere sit amet, auctor in lacus. Ut semper, dolor et elementum feugiat, orci nibh eleifend mi, eget pharetra neque neque ac eros. Praesent fringilla tellus eu purus semper, vel ultrices magna tempus. Nulla tristique sodales magna sit amet fringilla.",
+    name: "name",
+    url: "http://url",
+  },
 }
 `;
 

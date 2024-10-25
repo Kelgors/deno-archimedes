@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:17
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: archi
+      POSTGRES_PASSWORD: medes
+      POSTGRES_DB: bookmarks

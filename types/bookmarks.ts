@@ -8,6 +8,3 @@ export const bookmarkSchema = z.object({
   url: z.string().url(),
   description: z.string(),
 });
-
-export const persistantBookmarkSchema = bookmarkSchema.and(bookmarkObjectIdSchema);
-export type PersistantBookmark = z.infer<typeof persistantBookmarkSchema>;

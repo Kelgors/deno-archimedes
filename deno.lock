@@ -18,6 +18,8 @@
     "jsr:@std/path@0.221": "0.221.0",
     "jsr:@std/path@^1.0.6": "1.0.6",
     "jsr:@std/testing@^1.0.3": "1.0.3",
+    "npm:dbmate@*": "2.21.0",
+    "npm:dbmate@^2.21.0": "2.21.0",
     "npm:zod@^3.23.8": "3.23.8"
   },
   "jsr": {
@@ -104,6 +106,39 @@
     }
   },
   "npm": {
+    "@dbmate/darwin-arm64@2.21.0": {
+      "integrity": "sha512-9oSIsYIhQK8grBQ+PMnZ2GMLpkggy34V9w6fCjIan9Gd4iakHCKVTKKEIPRVDaTbPoaRblnzMrP4hwCBAYy4MQ=="
+    },
+    "@dbmate/darwin-x64@2.21.0": {
+      "integrity": "sha512-HUsE2sfz4agHyPHNcGUruS/HOyjTiMvZaObfdkty8hsPaguoCxYlFmdNC0pj1ivsa28EL1iUe4e9TwDjTOcdOg=="
+    },
+    "@dbmate/linux-arm64@2.21.0": {
+      "integrity": "sha512-Gap3qSgI8iQQNjcGP3jMPHH0z0y08YWyoo9GIA83ABHgL4TvyVpC1bdD+lyLZxXIWolYYZ+nOXd8V3JBda+HrA=="
+    },
+    "@dbmate/linux-arm@2.21.0": {
+      "integrity": "sha512-o+j9bZZlXLXkzOobEjCHZgpDB/b/d2GLctd74zVGm+8nX43WyB5+BvAXahlXu56RqYf5Tkc4QZ5hkTXcc2LzUw=="
+    },
+    "@dbmate/linux-ia32@2.21.0": {
+      "integrity": "sha512-g7zYGFj8MAqiiJVaJG992Hs/eHbxpmhfb4jA9UxdUNHzJvpzIEeAZyMpp+Ll4/DDJ5cgQTFUewQ/GBs/dfL7YA=="
+    },
+    "@dbmate/linux-x64@2.21.0": {
+      "integrity": "sha512-0oMDARHjLirtWvl+sM3OQ6xVK5v/eC3iP5pVSJDTHAJ2YKShDalRA/NYhCoi0Hc5ykv4t9hH6Vf14DPC1BODgQ=="
+    },
+    "@dbmate/win32-x64@2.21.0": {
+      "integrity": "sha512-Ex59p/cVDI2jFjQrs+z0ooPo6T6rRRAisOuNMkLoWEUoWDJYkiKXnwAa0OJlZaJtJZfix7lnX012OE5dQMxTcg=="
+    },
+    "dbmate@2.21.0": {
+      "integrity": "sha512-idfINKfdzxwLTrnntft6R659DsuXtll5mUb33yqmLyhMUqvR8727413vFy/6H6Qc60dQRiMu5Y/94csCOVyQrg==",
+      "dependencies": [
+        "@dbmate/darwin-arm64",
+        "@dbmate/darwin-x64",
+        "@dbmate/linux-arm",
+        "@dbmate/linux-arm64",
+        "@dbmate/linux-ia32",
+        "@dbmate/linux-x64",
+        "@dbmate/win32-x64"
+      ]
+    },
     "zod@3.23.8": {
       "integrity": "sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g=="
     }
@@ -332,6 +367,7 @@
       "jsr:@std/expect@^1.0.5",
       "jsr:@std/fs@^1.0.4",
       "jsr:@std/testing@^1.0.3",
+      "npm:dbmate@^2.21.0",
       "npm:zod@^3.23.8"
     ]
   }

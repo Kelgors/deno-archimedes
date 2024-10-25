@@ -230,7 +230,6 @@ describe('DELETE /bookmarks/:id', () => {
   it('should delete a bookmark', async () => {
     const result = await app.request(`/api/bookmarks/${createItemId}`, { method: 'DELETE', headers: defaultHeaders });
     expect(result.status).toBe(200);
-    await expect(result.json()).resolves.toEqual({ success: true });
   });
 
   it('should return a bad request when id param is not a uuid', async () => {

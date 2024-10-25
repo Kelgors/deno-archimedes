@@ -2,8 +2,4 @@ import '@std/dotenv/load';
 
 export const SERVER_PORT = Number(Deno.env.get('PORT')) || 3000;
 export const APP_SECRET_PATH = Deno.env.get('APP_SECRET_PATH') || 'private.key';
-export const DB_USER = Deno.env.get('DB_USER') || 'postgres';
-export const DB_PASSWORD = Deno.env.get('DB_PASSWORD') || 'postgres';
-export const DB_NAME = Deno.env.get('DB_NAME') || 'postgres';
-export const DB_HOST = Deno.env.get('DB_HOST') || 'localhost';
-export const DB_PORT = Number(Deno.env.get('DB_PORT')) || 5432;
+export const DATABASE_URL = Deno.env.get('DATABASE_URL') || '';

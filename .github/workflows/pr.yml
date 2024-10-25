@@ -12,33 +12,31 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: archi
+          POSTGRES_PASSWORD: medes
+          POSTGRES_DB: bookmarks
         options: >-
           --health-cmd="pg_isready"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
+    env:
+      DATABASE_URL: DATABASE_URL=postgres://archi:medes@localhost:5432/bookmarks?sslmode=disable
+      APP_SECRET_PATH: dev.key
+
     steps:
       - uses: actions/checkout@v3
-
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+      - uses: sqlc-dev/setup-sqlc@v4
+        with:
+          sqlc-version: '1.27.0'
 
       - run: deno fmt --check
-
       - run: deno lint
-
-      - name: Running migrations
-        env:
-          PGPASSWORD: postgres
-        run: |
-          for file in db/migrations/*.sql; do
-            echo "Running migration: $file"
-            psql -U postgres -h localhost -f "$file"
-          done
-
-      - run: deno test --allow-all
-        env:
-          APP_SECRET_PATH: dev.key
+      - run: sqlc generate
+      - run: deno install
+      - run: deno run migrate up
+      - run: deno run test

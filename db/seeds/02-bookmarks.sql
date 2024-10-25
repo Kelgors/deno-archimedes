@@ -1,6 +1,5 @@
-insert into "bookmarks"
-    ("id", "name", "description", "url")
-    values
+INSERT INTO bookmarks (id, name, description, url)
+VALUES
     (
         '3a543337-0989-400b-9d39-c2f02270a299',
         'DuckDuckGo',
@@ -32,12 +31,25 @@ insert into "bookmarks"
         'https://www.caramail.com/'
     );
 
-insert into "bookmark_users" ("user_id", "bookmark_id")
-values
-('67558dc7-15a9-4ec7-baa4-43610a81d17a', '3a543337-0989-400b-9d39-c2f02270a299'),
-('67558dc7-15a9-4ec7-baa4-43610a81d17a', '7abd6fbd-dc99-40b8-a404-efe6ae8a51f0'),
-('67558dc7-15a9-4ec7-baa4-43610a81d17a', '99943bac-567a-4bee-ba4d-fc72fed4c26b'),
-('67558dc7-15a9-4ec7-baa4-43610a81d17a', '96bd0559-5a64-4d57-b702-c9b7f6c6ba3d'),
-('492fb24a-d6a4-4fd9-96b6-0ec6ab0d7d9b', '1227de09-0806-488e-8e8e-c366b16b1638');
-
-
+INSERT INTO bookmark_users (user_id, bookmark_id)
+VALUES
+    (
+        '67558dc7-15a9-4ec7-baa4-43610a81d17a',
+        '3a543337-0989-400b-9d39-c2f02270a299'
+    ),
+    (
+        '67558dc7-15a9-4ec7-baa4-43610a81d17a',
+        '7abd6fbd-dc99-40b8-a404-efe6ae8a51f0'
+    ),
+    (
+        '67558dc7-15a9-4ec7-baa4-43610a81d17a',
+        '99943bac-567a-4bee-ba4d-fc72fed4c26b'
+    ),
+    (
+        '67558dc7-15a9-4ec7-baa4-43610a81d17a',
+        '96bd0559-5a64-4d57-b702-c9b7f6c6ba3d'
+    ),
+    (
+        '492fb24a-d6a4-4fd9-96b6-0ec6ab0d7d9b',
+        '1227de09-0806-488e-8e8e-c366b16b1638'
+    );

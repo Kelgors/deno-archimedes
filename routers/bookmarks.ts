@@ -1,49 +1,52 @@
 import { Hono } from 'hono';
+import {
+  createBookmark,
+  createBookmarkUserJoin,
+  deleteBookmark,
+  findAllBookmarks,
+  findBookmarkById,
+  updateBookmark,
+} from '../db/repositories/bookmarks_sql.ts';
 import { zJsonValidator, zParamValidator } from '../middlewares/zValidator.ts';
-import { bookmarkObjectIdSchema, bookmarkSchema, type PersistantBookmark } from '../types/bookmarks.ts';
+import { bookmarkObjectIdSchema, bookmarkSchema } from '../types/bookmarks.ts';
 import type { HonoEnv } from '../types/hono.ts';
 
 const router = new Hono<HonoEnv>();
 
 router.get('/', async (c) => {
-  const db = c.get('db');
-  const dbItems = await db
-    .queryObject<PersistantBookmark>(
-      `SELECT b.* FROM bookmarks b INNER JOIN bookmark_users bu ON bu.bookmark_id = b.id WHERE bu.user_id = $USER_ID`,
-      { user_id: c.get('token').sub },
-    );
-
-  return c.json({ data: dbItems.rows });
+  const dbItems = await findAllBookmarks(c.get('db'), {
+    userId: c.get('token').sub,
+  });
+  return c.json({ data: dbItems });
 });
 
 router.get('/:id', zParamValidator(bookmarkObjectIdSchema), async (c) => {
-  const db = c.get('db');
-  const result = await db.queryObject<PersistantBookmark>(
-    `SELECT b.* FROM bookmarks b INNER JOIN bookmark_users bu ON bu.bookmark_id = b.id WHERE bu.bookmark_id = $BOOKMARK_ID AND bu.user_id = $USER_ID LIMIT 1`,
-    { bookmark_id: c.req.param('id'), user_id: c.get('token').sub },
-  );
-  return c.json({ data: result.rows[0] || null }, result.rows[0] ? 200 : 404);
+  const dbItem = await findBookmarkById(c.get('db'), {
+    bookmarkId: c.req.param('id'),
+    userId: c.get('token').sub,
+  });
+  return c.json({ data: dbItem }, dbItem ? 200 : 404);
 });
 
 router.post(
   '/',
   zJsonValidator(bookmarkSchema),
   async (c) => {
-    const body = c.req.valid('json');
-    const db = c.get('db');
-    const result = await db.queryObject<PersistantBookmark>(
-      `INSERT INTO bookmarks (name, url, description) VALUES ($NAME, $URL, $DESCRIPTION) RETURNING *`,
-      body,
-    );
-    if (result.rowCount !== 1) {
-      return c.json({ error: { message: 'Cannot create the bookmark' } }, 500);
-    }
+    const tx = c.get('db').createTransaction('create_user');
 
-    await db.queryArray(`INSERT INTO bookmark_users (bookmark_id, user_id) VALUES ($BOOKMARK_ID, $USER_ID);`, {
-      bookmark_id: result.rows[0].id,
-      user_id: c.get('token').sub,
+    await tx.begin();
+
+    const dbItem = await createBookmark(tx, c.req.valid('json'));
+    if (!dbItem) throw new Error('Unable to create bookmark');
+
+    await createBookmarkUserJoin(tx, {
+      bookmarkId: dbItem.id,
+      userId: c.get('token').sub,
     });
-    return c.json({ data: result.rows[0] || null }, result.rows[0]?.id ? 201 : 500);
+
+    await tx.commit();
+
+    return c.json({ data: dbItem }, 201);
   },
 );
 
@@ -52,23 +55,17 @@ router.put(
   zParamValidator(bookmarkObjectIdSchema),
   zJsonValidator(bookmarkSchema),
   async (c) => {
-    const body = c.req.valid('json');
-    const db = c.get('db');
-    const result = await db.queryObject<PersistantBookmark>(
-      `UPDATE bookmarks SET name = $NAME, url = $URL, description = $DESCRIPTION WHERE id = $ID RETURNING *`,
-      { id: c.req.param('id'), ...body },
-    );
-    return c.json({ data: result.rows[0] || null });
+    const result = await updateBookmark(c.get('db'), {
+      id: c.req.param('id'),
+      ...c.req.valid('json'),
+    });
+    return c.json({ data: result });
   },
 );
 
 router.delete('/:id', zParamValidator(bookmarkObjectIdSchema), async (c) => {
-  const db = c.get('db');
-  const result = await db.queryArray(
-    `DELETE FROM bookmarks WHERE id = $ID`,
-    { id: c.req.param('id') },
-  );
-  return c.json({ success: (result.rowCount || 0) > 0 });
+  await deleteBookmark(c.get('db'), { id: c.req.param('id') });
+  return c.json({});
 });
 
 export default router;

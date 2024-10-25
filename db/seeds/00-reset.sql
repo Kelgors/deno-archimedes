@@ -1,4 +1,4 @@
-delete from "bookmark_users";
-delete from "bookmarks";
-delete from "auth_refresh_tokens";
-delete from "users";
+DELETE FROM bookmark_users;
+DELETE FROM bookmarks;
+DELETE FROM auth_refresh_tokens;
+DELETE FROM users;

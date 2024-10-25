@@ -1,5 +1,6 @@
-import { type Payload, verify as jwtVerify } from 'djwt';
+import { verify as jwtVerify } from 'djwt';
 import type { Context, Next } from 'hono';
+import { type DecodedAccessToken, decodedAccessTokenSchema } from '../types/auth.ts';
 
 export function authenticate() {
   return async function authenticationHandler(c: Context, next: Next) {
@@ -11,16 +12,17 @@ export function authenticate() {
       return c.json({ error: { message: 'This api only accept Bearer tokens' } }, 401);
     }
 
-    let token: Payload;
+    let accessToken: DecodedAccessToken;
     try {
-      token = await jwtVerify(authToken, c.get('privateKey'));
+      const payload = await jwtVerify(authToken, c.get('privateKey'));
+      accessToken = decodedAccessTokenSchema.parse(payload);
     } catch {
       return c.json({ error: { message: 'Wrong token signature' } }, 401);
     }
-    if (Date.now() > (token.exp ?? 0)) {
+    if (Date.now() > (accessToken.exp ?? 0)) {
       return c.json({ error: { message: 'Token expired' } }, 401);
     }
-    c.set('token', token);
+    c.set('token', accessToken);
 
     await next();
   };

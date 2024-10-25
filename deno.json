@@ -5,13 +5,16 @@
     "@std/fs": "jsr:@std/fs@^1.0.4",
     "@std/testing": "jsr:@std/testing@^1.0.3",
     "argon2": "jsr:@felix/argon2@^2.0.1",
+    "dbmate": "npm:dbmate@^2.21.0",
     "djwt": "https://deno.land/x/djwt@v3.0.2/mod.ts",
     "hono": "jsr:@hono/hono@^4.6.5",
     "postgres": "https://deno.land/x/postgres@v0.19.3/mod.ts",
     "zod": "npm:zod@^3.23.8"
   },
   "tasks": {
-    "start": "deno run --allow-net --allow-env --allow-read --allow-ffi main.ts"
+    "start": "deno run --allow-net --allow-env --allow-read --allow-ffi main.ts",
+    "test": "deno test --allow-all",
+    "migrate": "deno run --allow-all npm:dbmate"
   },
   "fmt": {
     "indentWidth": 2,

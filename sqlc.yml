@@ -1,0 +1,16 @@
+version: '2'
+plugins:
+  - name: ts
+    wasm:
+      url: https://github.com/Kelgors/sqlc-gen-typescript/releases/download/v0.1.3-deno-postgres/plugin.wasm
+      sha256: 757e99875e8f59953cdea6aadccba2cee5e512b66130aaab632ff47639c5ff8a
+sql:
+  - engine: 'postgresql'
+    queries: 'db/queries'
+    schema: 'db/migrations'
+    codegen:
+      - out: db/repositories
+        plugin: ts
+        options:
+          runtime: deno
+          driver: postgres
